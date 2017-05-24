@@ -1,4 +1,3 @@
-// import parse from '../solution';
 const solution = require('../solution');
 const PairedTag = require('../PairedTag');
 const SingleTag = require('../SingleTag');
@@ -48,6 +47,3 @@ expect(ast).toEqual(expected);
     const ast1 = solution.parse(data1);
     const expected1 = `<html><head><title>hello, hexlet!</title></head><body><div class="separator"></div><h1 class="header">html builder example</h1><div><img class="image" href="#"><span>span text2</span></div></body></html>`;
     expect(ast1.toString()).toEqual(expected1);
-
-// });
-// });
