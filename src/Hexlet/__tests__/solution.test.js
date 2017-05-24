@@ -31,7 +31,6 @@ const expected = new PairedTag('html', {}, '', [
 ]);
 
 expect(ast).toEqual(expected);
-
     const data1 = ['html', [
         ['head', [
             ['title', 'hello, hexlet!'],
