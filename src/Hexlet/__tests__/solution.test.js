@@ -3,9 +3,6 @@ const solution = require('../solution');
 const PairedTag = require('../PairedTag');
 const SingleTag = require('../SingleTag');
 
-
-// describe('HtmlBuilder', () => {
-//     it('#parse', () => {
 const data = ['html', [
     ['head', [
         ['title', 'hello, hexlet!'],
@@ -34,9 +31,7 @@ const expected = new PairedTag('html', {}, '', [
 ]);
 
 expect(ast).toEqual(expected);
-// });
 
-    // it('#toString', () => {
     const data1 = ['html', [
         ['head', [
             ['title', 'hello, hexlet!'],
