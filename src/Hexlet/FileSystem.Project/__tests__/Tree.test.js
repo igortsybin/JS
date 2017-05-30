@@ -2,7 +2,7 @@ const Tree = require('../Tree');
 
 describe('Tree', () => {
   let tree;
-
+  const treeTest = new Tree('/');
   beforeEach(() => {
     tree = new Tree('/');
     tree.addChild('var')
@@ -10,11 +10,11 @@ describe('Tree', () => {
       .addChild('run');
     tree.addChild('etc');
     tree.addChild('home');
-    //console.log(tree);
   });
 
   it('#hasChildren', () => {
     expect(tree.hasChildren()).toBeTruthy();
+    expect(treeTest.hasChildren()).toBeFalsy();
   });
 
   it('#hasChild', () => {

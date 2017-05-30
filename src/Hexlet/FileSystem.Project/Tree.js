@@ -38,17 +38,21 @@ class Tree {
   }
 
   getChildren() {
-    return this.children[Symbol.iterator]();
+    // const arr = Array.from(this.children.entries());
+    const input = this.children.entries();
+    const arr = Object.keys(input).map((key) => {key, input(key)});
+    console.log(arr);
+    return arr;
+    // return this.children[Symbol.iterator]();
   }
 
   removeChild(key) {
     this.children.delete(key);
-    return this.children;
+    return this;
   }
 
   hasChildren() {
-    console.log(this.children);
-    return this.children ? true : false;
+    return !(this.children.size === 0);
   }
   // END
 }
