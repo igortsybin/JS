@@ -38,12 +38,11 @@ class Tree {
   }
 
   getChildren() {
-    // const arr = Array.from(this.children.entries());
-    const input = this.children.entries();
-    const arr = Object.keys(input).map((key) => {key, input(key)});
-    console.log(arr);
-    return arr;
-    // return this.children[Symbol.iterator]();
+    // wtat is the func return?
+    // from tests => array of Trees?
+    const children = this.children.values();
+    const input = Array.from(children);
+    return input;
   }
 
   removeChild(key) {
@@ -53,6 +52,14 @@ class Tree {
 
   hasChildren() {
     return !(this.children.size === 0);
+  }
+
+  getDeepChild(keys) {
+    // keys === ['var', 'lib']
+    console.log(this);
+    return keys.reduce((acc, key) => {      
+      return acc.getChild(key);
+    }, this);
   }
   // END
 }
