@@ -1,9 +1,6 @@
 const Tree = require('./Tree');
 
 // BEGIN (write your solution here)
-function slashReplacer(str) {
-  return str.trim().replace(/\//gi, '');
-}
 
 function fromStrToArray(str) {
   return str.split('/').filter(value => value !== '');
@@ -15,23 +12,32 @@ module.exports = class {
     this.tree = new Tree('/', { type: 'dir' });
   }
   // BEGIN (write your solution here)
-  isDirectory(dir) {
-    const inputDir = fromStrToArray(dir);
-    // console.log(inputDir);
-    return this.tree.hasChildren &&
-    this.tree.getMeta.type === 'dir' &&
-    this.tree.getDeepChild(inputDir);
-    // const checkDir = this.tree.getChild(dir).
-    // const checkDir = this.tree.getChild(dir).getMeta().type.trim() === 'dir';
-    // const dirName = checkDir && slashReplacer(this.tree.getKey().trim());
-    // console.log(`${dirName} === ${slashReplacer(dir)}`);
-    // return dirName === slashReplacer(dir);
+  isDirectory(path) {
+    const inputPath = fromStrToArray(path);
+    return this.tree.getDeepChild(inputPath) &&
+    this.tree.getDeepChild(inputPath).getMeta().type === 'dir' &&
+    (this.tree.getDeepChild(inputPath).key === inputPath[inputPath.length - 1]);
   }
 
-  mkdirSync(dir) {
-    const newDir = new Tree(dir, 'dir', this);
-    this.tree.children.set(dir, newDir);
-    return newDir;
+  mkdirSync(path) {
+    const pathArray = fromStrToArray(path);
+    const pathNameWithoutLast = pathArray.slice(0, -1);
+    const lastButOneElem = this.tree.getDeepChild(pathNameWithoutLast);
+    lastButOneElem.addChild(pathArray[pathArray.length - 1], { type: 'dir' });
+  }
+
+  isFile(path) {
+    const inputPath = fromStrToArray(path);
+    return this.tree.getDeepChild(inputPath) &&
+    this.tree.getDeepChild(inputPath).getMeta().type === 'file' &&
+    (this.tree.getDeepChild(inputPath).key === inputPath[inputPath.length - 1]);
+  }
+
+  touchSync(path) {
+    const pathName = fromStrToArray(path);
+    const pathNameWithoutLast = pathName.slice(0, -1);
+    const lastButOneElem = this.tree.getDeepChild(pathNameWithoutLast);
+    lastButOneElem.addChild(pathName[pathName.length - 1], { type: 'file' });
   }
   // END
 }

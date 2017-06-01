@@ -13,11 +13,12 @@ describe('FS', () => {
   it('#mkdirSync', () => {
 
     expect(!files.isDirectory('/etc')).toBe(true);
-
     files.mkdirSync('/etc');
+    
     expect(files.isDirectory('/etc')).toBe(true);
-
+    // files.mkdirSync('/etc'); // extra
     files.mkdirSync('/etc/nginx');
+    // console.log(files);
     expect(files.isDirectory('/etc/nginx')).toBe(true);
   });
 
@@ -34,6 +35,11 @@ describe('FS', () => {
     expect(files.isDirectory('/var///log')).toBe(true);
   });
 
+  it('#isFile', () => {
+
+    expect(!files.isFile('/file.txt')).toBe(true);
+  });
+  
   it('#touchSync', () => {
 
     expect(!files.isFile('/file.txt')).toBe(true);
