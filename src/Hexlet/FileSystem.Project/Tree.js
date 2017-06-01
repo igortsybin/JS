@@ -25,10 +25,6 @@ class Tree {
     return this.children.get(key);
   }
 
-  // BEGIN (write your solution here)
-  // /var/lib/run
-  // /etc
-
   hasChild(key) {
     return this.children.has(key);
   }
@@ -38,9 +34,6 @@ class Tree {
   }
 
   getChildren() {
-    // const children = this.children.values();
-    // const input = Array.from(children);
-    // return input;
     return [...this.children.values()];
   }
 
@@ -54,11 +47,8 @@ class Tree {
   }
 
   getDeepChild(keys) {
-    // keys === ['var', 'lib']
-    // console.log(this);
     return keys.reduce((acc, key) => acc && acc.getChild(key), this);
   }
-  // END
 }
 
 module.exports = Tree;
