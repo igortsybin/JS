@@ -1,43 +1,31 @@
 const Tree = require('./Tree');
+const Dir = require('./Dir');
+const File = require('./File');
 
-// BEGIN (write your solution here)
+const getPathParts = (path) =>
+  path.split('/').filter(part => part !== '');
 
-function fromStrToArray(str) {
-  return str.split('/').filter(value => value !== '');
-}
-// END
-
-module.exports = class {
+export default class {
   constructor() {
-    this.tree = new Tree('/', { type: 'dir' });
-  }
-  // BEGIN (write your solution here)
-  isDirectory(path) {
-    const inputPath = fromStrToArray(path);
-    return this.tree.getDeepChild(inputPath) &&
-    this.tree.getDeepChild(inputPath).getMeta().type === 'dir' &&
-    (this.tree.getDeepChild(inputPath).key === inputPath[inputPath.length - 1]);
+    this.tree = new Tree('/', new Dir('/'));
   }
 
-  mkdirSync(path) {
-    const pathArray = fromStrToArray(path);
-    const pathNameWithoutLast = pathArray.slice(0, -1);
-    const lastButOneElem = this.tree.getDeepChild(pathNameWithoutLast);
-    lastButOneElem.addChild(pathArray[pathArray.length - 1], { type: 'dir' });
-  }
-
-  isFile(path) {
-    const inputPath = fromStrToArray(path);
-    return this.tree.getDeepChild(inputPath) &&
-    this.tree.getDeepChild(inputPath).getMeta().type === 'file' &&
-    (this.tree.getDeepChild(inputPath).key === inputPath[inputPath.length - 1]);
+  statSync(path) {
+    const current = this.tree.getDeepChild(getPathParts(path));
+    return current.getMeta().getStats();
   }
 
   touchSync(path) {
-    const pathName = fromStrToArray(path);
-    const pathNameWithoutLast = pathName.slice(0, -1);
-    const lastButOneElem = this.tree.getDeepChild(pathNameWithoutLast);
-    lastButOneElem.addChild(pathName[pathName.length - 1], { type: 'file' });
+    const parts = getPathParts(path);
+    const name = parts[parts.length - 1];
+    const parent = this.tree.getDeepChild(parts.slice(0, -1));
+    return parent.addChild(name, new File(name));
   }
-  // END
+
+  mkdirSync(path) {
+    const parts = getPathParts(path);
+    const name = parts[parts.length - 1];
+    const parent = this.tree.getDeepChild(parts.slice(0, -1));
+    return parent.addChild(name, new Dir(name));
+  }
 }
