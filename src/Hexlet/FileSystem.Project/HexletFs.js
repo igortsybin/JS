@@ -2,10 +2,10 @@ const Tree = require('./Tree');
 const Dir = require('./Dir');
 const File = require('./File');
 
-const getPathParts = (path) =>
+const getPathParts = path =>
   path.split('/').filter(part => part !== '');
 
-export default class {
+module.exports = class {
   constructor() {
     this.tree = new Tree('/', new Dir('/'));
   }
@@ -28,4 +28,4 @@ export default class {
     const parent = this.tree.getDeepChild(parts.slice(0, -1));
     return parent.addChild(name, new Dir(name));
   }
-}
+};
