@@ -14,7 +14,6 @@ module.exports = class Stats {
     if (path) {
       this.path = path;
     }
-    
   }
 
   isFile(path) {

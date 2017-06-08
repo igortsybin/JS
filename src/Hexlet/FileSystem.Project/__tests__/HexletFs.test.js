@@ -1,4 +1,4 @@
-import HexletFs from '../HexletFs';
+const HexletFs = require('../HexletFs');
 
 
 describe('FS', () => {
