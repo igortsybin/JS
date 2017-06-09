@@ -1,7 +1,12 @@
-import HexletFs from './HexletFs';
+// import HexletFs from './HexletFs';
 import Node from './Node';
+import Stats from './Stats';
 
-class Dir extends Node {
+export default class Dir extends Node {
+  constructor(name) {
+    super(name);
+    this.stats = new Stats({ type: 'dir' });
+  }
 
 }
-module.exports = Dir;
+// module.exports = Dir;

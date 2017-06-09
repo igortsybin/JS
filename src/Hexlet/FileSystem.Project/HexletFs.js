@@ -32,4 +32,4 @@ export default class {
     const parent = this.tree.getDeepChild(parts.slice(0, -1));
     return parent.addChild(name, new Dir(name));
   }
-};
+}

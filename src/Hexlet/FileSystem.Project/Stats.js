@@ -1,9 +1,10 @@
 // const File = require('./File');
 // const Dir = require('./Dir');
+import HexletFs from './HexletFs';
 
 export default class Stats {
-  constructor(name, type) {
-    this.name = name;
+  constructor(type) {
+    // this.name = name;
     this.type = type;
     // const C = type === 'dir' ? Dir : File;
     // return new C(name);
@@ -12,14 +13,13 @@ export default class Stats {
 
   isDirectory(path) {
     if (path) {
-      this.path = path;
+      return HexletFs.statSync(path) === 'dir';
     }
+    return this.type === 'dir';
   }
 
-  isFile(path) {
-    if (path) {
-      this.path = path;
-    }
+  isFile(path) {    
+    return this.type === 'file';
   }
 }
 // module.exports = Stats;
