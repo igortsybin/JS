@@ -11,14 +11,11 @@ export default class Stats {
     // check type os stats like build node
   }
 
-  isDirectory(path) {
-    if (path) {
-      return HexletFs.statSync(path) === 'dir';
-    }
+  isDirectory() {
     return this.type === 'dir';
   }
 
-  isFile(path) {    
+  isFile() { 
     return this.type === 'file';
   }
 }

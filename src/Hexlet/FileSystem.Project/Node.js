@@ -13,7 +13,7 @@ export default class Node {
   }
   // return stats object:e.g. file.getStats().isFile ();
   getStats() {
-    return new Stats(this.isFile(), this.isDirectory());
+    // return new Stats(this.isFile(), this.isDirectory());
   }
 }
 
