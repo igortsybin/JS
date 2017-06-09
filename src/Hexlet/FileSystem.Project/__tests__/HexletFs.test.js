@@ -1,5 +1,5 @@
-const HexletFs = require('../HexletFs');
-
+// const HexletFs = require('../HexletFs');
+import HexletFs from '../HexletFs';
 
 describe('FS', () => {
   let files;

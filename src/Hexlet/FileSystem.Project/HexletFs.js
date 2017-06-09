@@ -1,11 +1,15 @@
-const Tree = require('./Tree');
-const Dir = require('./Dir');
-const File = require('./File');
+// const Tree = require('./Tree');
+// const Dir = require('./Dir');
+// const File = require('./File');
+import Dir from './Dir';
+import File from './File';
+import Tree from './Tree';
+
 
 const getPathParts = path =>
   path.split('/').filter(part => part !== '');
 
-module.exports = class {
+export default class {
   constructor() {
     this.tree = new Tree('/', new Dir('/'));
   }

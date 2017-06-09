@@ -1,8 +1,9 @@
 // const HexletFs = require('./HexletFs');
 // const Stats = require('./Stats');
+import Stats from './Stats';
 // const File = require('./File');
 
-class Node {
+export default class Node {
   constructor(name, stats) {
     this.name = name;
     this.stats = stats;
@@ -16,5 +17,5 @@ class Node {
   }
 }
 
-module.exports = Node;
+// module.exports = Node;
 

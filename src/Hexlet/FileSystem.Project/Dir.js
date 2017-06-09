@@ -1,5 +1,5 @@
-const HexletFs = require('./HexletFs');
-const Node = require('./Node');
+import HexletFs from './HexletFs';
+import Node from './Node';
 
 class Dir extends Node {
 

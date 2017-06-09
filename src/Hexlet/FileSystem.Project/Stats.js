@@ -1,12 +1,12 @@
-const File = require('./File');
-const Dir = require('./Dir');
+// const File = require('./File');
+// const Dir = require('./Dir');
 
-module.exports = class Stats {
+export default class Stats {
   constructor(name, type) {
     this.name = name;
     this.type = type;
-    const C = type === 'dir' ? Dir : File;
-    return new C(name);
+    // const C = type === 'dir' ? Dir : File;
+    // return new C(name);
     // check type os stats like build node
   }
 
@@ -21,4 +21,5 @@ module.exports = class Stats {
       this.path = path;
     }
   }
-};
+}
+// module.exports = Stats;

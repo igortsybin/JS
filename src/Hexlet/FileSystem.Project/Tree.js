@@ -1,4 +1,4 @@
-class Tree {
+export default class Tree {
   constructor(key, meta, parent) {
     this.parent = parent;
     this.key = key;
@@ -51,4 +51,4 @@ class Tree {
   }
 }
 
-module.exports = Tree;
+// module.exports = Tree;
