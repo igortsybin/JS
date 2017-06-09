@@ -1,7 +1,3 @@
-// const File = require('./File');
-// const Dir = require('./Dir');
-import HexletFs from './HexletFs';
-
 export default class Stats {
   constructor(type) {
     this.type = type;
@@ -15,4 +11,3 @@ export default class Stats {
     return this.type === 'file';
   }
 }
-// module.exports = Stats;
