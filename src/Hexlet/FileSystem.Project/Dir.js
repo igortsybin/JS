@@ -5,7 +5,7 @@ import Stats from './Stats';
 export default class Dir extends Node {
   constructor(name) {
     super(name);
-    this.stats = new Stats({ type: 'dir' });
+    this.stats = new Stats('dir');
   }
 
 }

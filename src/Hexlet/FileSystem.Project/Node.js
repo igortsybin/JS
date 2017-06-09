@@ -4,15 +4,15 @@ import Stats from './Stats';
 // const File = require('./File');
 
 export default class Node {
-  constructor(name, stats) {
+  constructor(name) {
     this.name = name;
-    this.stats = stats;
   }
   getName() {
     return this.name;
   }
   // return stats object:e.g. file.getStats().isFile ();
   getStats() {
+    return this.stats;
     // return new Stats(this.isFile(), this.isDirectory());
   }
 }
