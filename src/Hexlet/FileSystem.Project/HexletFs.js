@@ -1,13 +1,20 @@
-// const Tree = require('./Tree');
-// const Dir = require('./Dir');
-// const File = require('./File');
+// path.parse('/home/user/dir/file.txt');
+// Returns:
+// { root: '/',
+//   dir: '/home/user/dir',
+//   base: 'file.txt',
+//   ext: '.txt',
+//   name: 'file' }
+
+import path from 'path';
 import Dir from './Dir';
 import File from './File';
 import Tree from './Tree';
 
+console.log(path.parse('/home/user'));
 
-const getPathParts = path =>
-  path.split('/').filter(part => part !== '');
+const getPathParts = filepath =>
+  filepath.split(path.sep).filter(part => part !== '');
 
 export default class {
   constructor() {
@@ -25,18 +32,31 @@ export default class {
     }
     return current.getMeta().getStats();
   }
+  
+  touchSync(filepath) {
+    const { base, dir } = path.getPathParts(filepath);
+    const parent = this.findNode(dir);
+    if (!parent || parent.getMeta().getStats().isFile()) {
+      return false;
+    }
+    return parent.addChild(base, new File(base));
 
-  touchSync(path) {
-    const parts = getPathParts(path);
-    const name = parts[parts.length - 1];
-    const parent = this.tree.getDeepChild(parts.slice(0, -1));
-    return parent.addChild(name, new File(name));
+    // const parts = getPathParts(filepath);
+    // const name = parts[parts.length - 1];
+    // const parent = this.tree.getDeepChild(parts.slice(0, -1));
+    // return parent.addChild(name, new File(name));
   }
 
-  mkdirSync(path) {
-    const parts = getPathParts(path);
-    const name = parts[parts.length - 1];
-    const parent = this.tree.getDeepChild(parts.slice(0, -1));
-    return parent.addChild(name, new Dir(name));
+  mkdirSync(filepath) {
+    const { base, dir } = path.parse(filepath);
+    const parent = this.findNode(dir);
+    if (!parent || parent.getMeta().getStats().isFile()) {
+      return false;
+    }
+    return parent.addChild(base, new Dir(base));
+    // const parts = getPathParts(filepath);
+    // const name = parts[parts.length - 1];
+    // const parent = this.tree.getDeepChild(parts.slice(0, -1));
+    // return parent.addChild(name, new Dir(name));
   }
 }
