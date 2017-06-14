@@ -1,13 +1,15 @@
 export default class Stats {
-  constructor(type) {
-    this.type = type;
+  constructor(file, dir) {
+    this.dir = dir;
+    this.file = file;
+    // this.type = type;
   }
 
   isDirectory() {
-    return this.type === 'dir';
+    return this.dir;
   }
 
   isFile() {
-    return this.type === 'file';
+    return this.file;
   }
 }

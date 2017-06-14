@@ -1,10 +1,14 @@
 // import HexletFs from './HexletFs';
 import Node from './Node';
 
-
 export default class Dir extends Node {
-  constructor(name) {
-    super(name, 'dir');
+
+  isDirectory() { // eslint-disable-line
+    return true;
+  }
+
+  isFile() { // eslint-disable-line
+    return false;
   }
 
 }

@@ -2,9 +2,9 @@ import Stats from './Stats';
 
 
 export default class Node {
-  constructor(name, type) {
+  constructor(name) {
     this.name = name;
-    this.stats = new Stats(type);
+    this.stats = new Stats(this.isFile(), this.isDirectory());
   }
   getName() {
     return this.name;

@@ -13,9 +13,16 @@ export default class {
   constructor() {
     this.tree = new Tree('/', new Dir('/'));
   }
+  findNode(filepath) {
+    const parts = getPathParts(filepath);
+    return parts.length === 0 ? this.tree : this.tree.getDeepChild(parts);
+  }
 
-  statSync(path) {
-    const current = this.tree.getDeepChild(getPathParts(path));
+  statSync(filepath) {
+    const current = this.findNode(filepath);
+    if (!current) {
+      return null;
+    }
     return current.getMeta().getStats();
   }
 
