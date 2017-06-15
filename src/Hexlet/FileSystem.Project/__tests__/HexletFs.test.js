@@ -16,10 +16,14 @@ describe('FS', () => {
 
 
   it('#mkdirpSync', () => {
+    // console.log(files);
+
+    // expect(files.statSync('/nginx').isDirectory()).toBe(false);
     expect(files.statSync('/etc/nginx/conf.d').isDirectory()).toBe(true);
+    expect(files.statSync('/etc/nginx/nginx.conf').isFile()).toBe(true);
     expect(files.mkdirpSync('/etc/nginx/nginx.conf/wrong')).toBe(false);
   });
-
+  
   it('#mkdirSync', () => {
     expect(files.mkdirSync('/etc/nginx/nginx.conf/wrong')).toBe(false);
     expect(files.mkdirSync('/opt/folder/inner')).toBe(false);

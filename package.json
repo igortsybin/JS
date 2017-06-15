@@ -7,16 +7,22 @@
     "test": "jest  --colors"
   },
   "jest": {
-    "transform": {".*": "<rootDir>/node_modules/babel-jest"},
-    "moduleFileExtensions": ["js", "json", "es6"]
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
+    ]
   },
   "transform": {
-  "^.+\\.jsx?$": "babel-jest"
+    "^.+\\.jsx?$": "babel-jest"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
-    "babel-jest": "^20.0.3",    
+    "babel-jest": "^20.0.3",
     "babel-preset-env": "^1.5.2",
     "babel-preset-import-export": "^1.0.2",
     "eslint": "^3.19.0",
@@ -28,6 +34,8 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
     "express": "3",
+    "hexlet-fs": "^0.3.0",
+    "hexlet-trees": "^0.5.1",
     "jade": "*",
     "jest": "^20.0.4",
     "mocha": "*",

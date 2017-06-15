@@ -7,19 +7,21 @@
 //   name: 'file' }
 
 import path from 'path';
-import Dir from './Dir';
-import File from './File';
-import Tree from './Tree';
+import Tree from 'hexlet-trees'; // eslint-disable-line
+import { Dir, File } from 'hexlet-fs'; // eslint-disable-line
+// import Dir from './Dir';
+// import File from './File';
+// import Tree from './Tree';
 
-console.log(path.parse('/home/user'));
 
 const getPathParts = filepath =>
-  filepath.split(path.sep).filter(part => part !== '');
+  filepath.split('/').filter(part => part !== '');
 
 export default class {
   constructor() {
     this.tree = new Tree('/', new Dir('/'));
   }
+
   findNode(filepath) {
     const parts = getPathParts(filepath);
     return parts.length === 0 ? this.tree : this.tree.getDeepChild(parts);
@@ -32,14 +34,32 @@ export default class {
     }
     return current.getMeta().getStats();
   }
-  
+  mkdirpSync(filepath) {
+    let flag = true;
+    const parts = getPathParts(filepath);
+    parts.reduce((subtree, dir) => {
+      const currentChild = subtree.getChild(dir);
+      if (!currentChild) {
+        return subtree.addChild(dir, new Dir(dir));
+      }
+      if (!currentChild.getMeta().getStats().isDirectory()) {
+        flag = false; // we should break somehow
+      }
+      return currentChild;
+    }
+          , this.tree);
+    // console.log(newDir);
+    return flag;
+  }
+
   touchSync(filepath) {
-    const { base, dir } = path.getPathParts(filepath);
+    const { base, dir } = path.parse(filepath);
     const parent = this.findNode(dir);
-    if (!parent || parent.getMeta().getStats().isFile()) {
+    if (!parent || !parent.getMeta().getStats().isDirectory()) {
       return false;
     }
-    return parent.addChild(base, new File(base));
+    parent.addChild(base, new File(base));
+    return true;
 
     // const parts = getPathParts(filepath);
     // const name = parts[parts.length - 1];
