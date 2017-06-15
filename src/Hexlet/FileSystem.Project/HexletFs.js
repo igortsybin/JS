@@ -1,18 +1,7 @@
-// path.parse('/home/user/dir/file.txt');
-// Returns:
-// { root: '/',
-//   dir: '/home/user/dir',
-//   base: 'file.txt',
-//   ext: '.txt',
-//   name: 'file' }
-
 import path from 'path';
 import Tree from 'hexlet-trees'; // eslint-disable-line
 import { Dir, File } from 'hexlet-fs'; // eslint-disable-line
-// import Dir from './Dir';
-// import File from './File';
 // import Tree from './Tree';
-
 
 const getPathParts = filepath =>
   filepath.split('/').filter(part => part !== '');
@@ -48,7 +37,6 @@ export default class {
       return currentChild;
     }
           , this.tree);
-    // console.log(newDir);
     return flag;
   }
 
@@ -60,11 +48,6 @@ export default class {
     }
     parent.addChild(base, new File(base));
     return true;
-
-    // const parts = getPathParts(filepath);
-    // const name = parts[parts.length - 1];
-    // const parent = this.tree.getDeepChild(parts.slice(0, -1));
-    // return parent.addChild(name, new File(name));
   }
 
   mkdirSync(filepath) {
@@ -74,9 +57,23 @@ export default class {
       return false;
     }
     return parent.addChild(base, new Dir(base));
-    // const parts = getPathParts(filepath);
-    // const name = parts[parts.length - 1];
-    // const parent = this.tree.getDeepChild(parts.slice(0, -1));
-    // return parent.addChild(name, new Dir(name));
   }
+
+  readdirSync(filepath) {
+    const parent = this.findNode(filepath);
+    if (!parent || parent.getMeta().getStats().isFile()) {
+      return false;
+    }
+    const result = parent.getChildren().map(elem => elem.key);
+    // console.log(result);
+    return result;
+  }
+
+  
+// Returns:
+// { root: '/',
+//   dir: '/home/user/dir',
+//   base: 'file.txt',
+//   ext: '.txt',
+//   name: 'file' }
 }
