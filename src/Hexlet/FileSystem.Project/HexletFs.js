@@ -56,9 +56,23 @@ export default class {
     }
     return [parent.addChild(base, new File(base, '')), null];
   }
+   // BEGIN (write your solution here)
+  unlinkSync(filepath) {
+    const { base } = path.parse(filepath);
+    const current = this.findNode(filepath);
+    if (!current) {
+      return [null, errors.code.ENOENT];
+    }
+    if (current.getMeta().getStats().isDirectory()) {
+      return [null, errors.code.EPERM];
+    }
+    return [current.getParent().removeChild(base), null];
+  }
+  // END
 
-  mkdirSync(filepath) {
-    const { base, dir } = path.parse(filepath);
+
+  mkdirSync(dirpath) {
+    const { base, dir } = path.parse(dirpath);
     const parent = this.findNode(dir);
     if (!parent || parent.getMeta().getStats().isFile()) {
       return false;
@@ -76,9 +90,9 @@ export default class {
     return [dir.getChildren().map(child => child.getKey()), null];
   }
 
-  rmdirSync(filepath) {
-    const { base } = path.parse(filepath);
-    const current = this.findNode(filepath);
+  rmdirSync(dirpath) {
+    const { base } = path.parse(dirpath);
+    const current = this.findNode(dirpath);
     if (!current
     || current.hasChildren()
     || current.getMeta().getStats().isFile()) {
