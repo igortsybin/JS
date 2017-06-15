@@ -60,16 +60,27 @@ export default class {
   }
 
   readdirSync(filepath) {
-    const parent = this.findNode(filepath);
-    if (!parent || parent.getMeta().getStats().isFile()) {
+    const current = this.findNode(filepath);
+    if (!current || current.getMeta().getStats().isFile()) {
       return false;
     }
-    const result = parent.getChildren().map(elem => elem.key);
+    const result = current.getChildren().map(elem => elem.key);
     // console.log(result);
     return result;
   }
 
-  
+  rmdirSync(filepath) {
+    const { base } = path.parse(filepath);
+    const current = this.findNode(filepath);
+    if (!current
+    || current.hasChildren()
+    || current.getMeta().getStats().isFile()) {
+      return false;
+    }
+    return current.getParent().removeChild(base);
+  }
+
+
 // Returns:
 // { root: '/',
 //   dir: '/home/user/dir',
