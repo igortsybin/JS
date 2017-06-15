@@ -23,6 +23,7 @@ describe('FS', () => {
 
   it('#readFileSync', () => {
     files.writeFileSync('/etc/nginx/nginx.conf', 'directives');
+    console.log(files.readdirSync('/etc/nginx'));
     const [data, err] = files.readFileSync('/etc/nginx/nginx.conf');
     expect(data).toBe('directives');
     expect(err).toBe(null);
