@@ -1,10 +1,11 @@
 import path from 'path';
+import errors from 'errno'; // eslint-disable-line
 import Tree from 'hexlet-trees'; // eslint-disable-line
 import { Dir, File } from 'hexlet-fs'; // eslint-disable-line
-// import Tree from './Tree';
+
 
 const getPathParts = filepath =>
-  filepath.split('/').filter(part => part !== '');
+  filepath.split(path.posix.sep).filter(part => part !== '');
 
 export default class {
   constructor() {
@@ -23,21 +24,22 @@ export default class {
     }
     return current.getMeta().getStats();
   }
+
   mkdirpSync(filepath) {
-    let flag = true;
-    const parts = getPathParts(filepath);
-    parts.reduce((subtree, dir) => {
-      const currentChild = subtree.getChild(dir);
-      if (!currentChild) {
-        return subtree.addChild(dir, new Dir(dir));
+    return getPathParts(filepath).reduce((subtree, part) => {
+      if (!subtree) {
+        return false;
       }
-      if (!currentChild.getMeta().getStats().isDirectory()) {
-        flag = false; // we should break somehow
+      const current = subtree.getChild(part);
+      if (!current) {
+        return subtree.addChild(part, new Dir(part));
       }
-      return currentChild;
-    }
-          , this.tree);
-    return flag;
+      if (current.getMeta().getStats().isFile()) {
+        return false;
+      }
+
+      return current;
+    }, this.tree);
   }
 
   touchSync(filepath) {
@@ -65,7 +67,6 @@ export default class {
       return false;
     }
     const result = current.getChildren().map(elem => elem.key);
-    // console.log(result);
     return result;
   }
 
@@ -79,12 +80,4 @@ export default class {
     }
     return current.getParent().removeChild(base);
   }
-
-
-// Returns:
-// { root: '/',
-//   dir: '/home/user/dir',
-//   base: 'file.txt',
-//   ext: '.txt',
-//   name: 'file' }
 }
