@@ -20,36 +20,41 @@ export default class {
   statSync(filepath) {
     const current = this.findNode(filepath);
     if (!current) {
-      return null;
+      return [null, errors.code.ENOENT];
     }
-    return current.getMeta().getStats();
+    return [current.getMeta().getStats(), null];
   }
 
   mkdirpSync(filepath) {
-    return getPathParts(filepath).reduce((subtree, part) => {
-      if (!subtree) {
-        return false;
+    const iter = (parts, subtree) => {
+      if (parts.length === 0) {
+        return [subtree, null];
       }
+      const [part, ...rest] = parts;
       const current = subtree.getChild(part);
       if (!current) {
-        return subtree.addChild(part, new Dir(part));
+        return iter(rest, subtree.addChild(part, new Dir(part)));
       }
-      if (current.getMeta().getStats().isFile()) {
-        return false;
+      if (current.getMeta().isFile()) {
+        return [null, errors.code.ENOTDIR];
       }
 
-      return current;
-    }, this.tree);
+      return iter(rest, current);
+    };
+    const parts = getPathParts(filepath);
+    return iter(parts, this.tree);
   }
 
   touchSync(filepath) {
     const { base, dir } = path.parse(filepath);
     const parent = this.findNode(dir);
-    if (!parent || !parent.getMeta().getStats().isDirectory()) {
-      return false;
+    if (!parent) {
+      return [null, errors.code.ENOENT];
     }
-    parent.addChild(base, new File(base));
-    return true;
+    if (parent.getMeta().isFile()) {
+      return [null, errors.code.ENOTDIR];
+    }
+    return [parent.addChild(base, new File(base, '')), null];
   }
 
   mkdirSync(filepath) {
@@ -62,12 +67,13 @@ export default class {
   }
 
   readdirSync(filepath) {
-    const current = this.findNode(filepath);
-    if (!current || current.getMeta().getStats().isFile()) {
-      return false;
+    const dir = this.findNode(filepath);
+    if (!dir) {
+      return [null, errors.code.ENOENT];
+    } else if (dir.getMeta().isFile()) {
+      return [null, errors.code.ENOTDIR];
     }
-    const result = current.getChildren().map(elem => elem.key);
-    return result;
+    return [dir.getChildren().map(child => child.getKey()), null];
   }
 
   rmdirSync(filepath) {

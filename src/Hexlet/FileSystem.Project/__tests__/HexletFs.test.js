@@ -1,4 +1,3 @@
-// const HexletFs = require('../HexletFs');
 import HexletFs from '../HexletFs';
 
 describe('FS', () => {
@@ -6,65 +5,46 @@ describe('FS', () => {
 
   beforeEach(() => {
     files = new HexletFs();
-    files.mkdirSync('/etc');
-    files.mkdirSync('/opt');
+    files.mkdirpSync('/etc');
+    files.mkdirpSync('/opt');
     files.touchSync('/opt/file.txt');
     files.mkdirpSync('/etc/nginx/conf.d');
-    files.touchSync('/etc/nginx/nginx.conf');
-    files.mkdirpSync('/usr/admin/docs');
   });
 
+  it('#writeFileSync', () => {
+    const [data, err] = files.writeFileSync('/etc/unknown/file', 'body');
+    expect(data).toBe(null);
+    expect(err.code).toBe('ENOENT');
 
-  it('#mkdirpSync', () => {
-    // console.log(files);
-
-    // expect(files.statSync('/nginx').isDirectory()).toBe(false);
-    expect(files.statSync('/etc/nginx/conf.d').isDirectory()).toBe(true);
-    expect(files.statSync('/etc/nginx/nginx.conf').isFile()).toBe(true);
-    expect(files.mkdirpSync('/etc/nginx/nginx.conf/wrong')).toBe(false);
-  });
-  
-  it('#mkdirSync', () => {
-    expect(files.mkdirSync('/etc/nginx/nginx.conf/wrong')).toBe(false);
-    expect(files.mkdirSync('/opt/folder/inner')).toBe(false);
-
-    expect(files.statSync('/opt').isDirectory()).toBe(true);
+    const [data2, err2] = files.writeFileSync('/etc', 'body');
+    expect(data2).toBe(null);
+    expect(err2.code).toBe('EISDIR');
   });
 
-  it('#mkdirSync', () => {
-    expect(files.readdirSync('/etc/nginx')).toEqual(['conf.d', 'nginx.conf']);
-    expect(files.readdirSync('/')).toEqual(['etc', 'opt', 'usr']);
-    expect(files.readdirSync('/etc/nginx/undefined')).toBe(false);
-    expect(files.readdirSync('/etc/nginx/nginx.conf')).toBe(false);
+  it('#readFileSync', () => {
+    files.writeFileSync('/etc/nginx/nginx.conf', 'directives');
+    const [data, err] = files.readFileSync('/etc/nginx/nginx.conf');
+    expect(data).toBe('directives');
+    expect(err).toBe(null);
+
+    const [data2, err2] = files.readFileSync('/etc/nginx');
+    expect(data2).toBe(null);
+    expect(err2.code).toBe('EISDIR');
+
+    const [data3, err3] = files.readFileSync('/etc/unknown');
+    expect(data3).toBe(null);
+    expect(err3.code).toBe('ENOENT');
   });
 
-  it('#rmdirSync', () => {
-    files.rmdirSync('/etc/nginx/conf.d');
-    expect(files.readdirSync('/etc/nginx')).toEqual(['nginx.conf']);
+  it('#unlinkSync', () => {
+    files.writeFileSync('/etc/nginx/nginx.conf', 'directives');
+    files.unlinkSync('/etc/nginx/nginx.conf');
+    const [data, err] = files.readdirSync('/etc/nginx');
+    expect(err).toBe(null);
+    expect(data).toEqual(['conf.d']);
 
-    expect(files.rmdirSync('/etc/unknown')).toBe(false);
-    expect(files.rmdirSync('/etc/nginx')).toBe(false);
-
-    expect(files.rmdirSync('/etc/nginx/nginx.conf')).toBe(false);
-
-    files.rmdirSync('/usr/admin/docs');
-    expect(files.readdirSync('/usr/admin/docs')).toBe(false);
-  });
-
-  it('#statSync', () => {
-    expect(files.statSync('/etc/nginx').isDirectory()).toBe(true);
-    expect(files.statSync('/etc/nginx').isFile()).toBe(false);
-
-    expect(files.statSync('/etc/nginx/nginx.conf').isDirectory()).toBe(false);
-    expect(files.statSync('/etc/nginx/nginx.conf').isFile()).toBe(true);
-
-    expect(files.statSync('/etc/unknown')).toBe(null);
-  });
-
-  it('#touchSync', () => {
-    expect(files.touchSync('/etc/nginx/nginx.conf/wrong')).toBe(false);
-    expect(files.touchSync('/opt/folder/inner')).toBe(false);
-
-    expect(files.statSync('/opt/file.txt').isFile()).toBe(true);
+    const [data2, err2] = files.unlinkSync('/etc/nginx');
+    expect(data2).toBe(null);
+    expect(err2.code).toBe('EPERM');
   });
 });
