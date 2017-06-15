@@ -68,6 +68,25 @@ export default class {
     }
     return [current.getParent().removeChild(base), null];
   }
+
+  writeFileSync(filepath, content) {
+    const { base, dir } = path.parse(filepath);
+    const current = this.findNode(filepath);
+    const parent = this.findNode(dir);
+    if (!parent) {
+      return [null, errors.code.ENOENT];
+    }
+    if (current.getMeta().isDirectory()) {
+      return [null, errors.code.EISDIR];
+    }
+    return [parent.addChild(new File(base, content)), null];
+  }
+  // Returns:
+// { root: '/',
+//   dir: '/home/user/dir',
+//   base: 'file.txt',
+//   ext: '.txt',
+//   name: 'file' }
   // END
 
 
