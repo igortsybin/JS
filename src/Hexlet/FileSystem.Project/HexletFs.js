@@ -25,6 +25,34 @@ export default class {
     }
     return current.getMeta().getStats();
   }
+  // Returns:
+// { root: '/',
+//   dir: '/home/user/dir',
+//   base: 'file.txt',
+//   ext: '.txt',
+//   name: 'file' }
+  copySync(src, dest) {
+    const { base: baseSrc } = path.parse(src);
+    const { dir: dirDest, base: baseDest } = path.parse(dest);
+    // if dest it's a path to a folder, than a name of a file gets from src
+    const currentDest = this.findNode(dest);
+    const parentDest = this.findNode(dirDest);
+    const currentSrc = this.findNode(src);
+    if (!currentSrc || !currentDest) {
+      throw new HexletFsError(errors.code.ENOENT, src);
+    }
+    if (currentSrc.getMeta().getStats().isDirectory()) {
+      throw new HexletFsError(errors.code.EISDIR, src);
+    }
+    // console.log(currentSrc.getMeta().getBody());
+    if (currentDest.getMeta().getStats().isDirectory()) {
+      return currentDest.addChild(baseSrc,
+    new File(baseSrc, currentSrc.getMeta().getBody()));
+    }
+    // if dest it's path to file (existed or not) than his body = src's body
+    return parentDest.addChild(baseDest,
+    new File(baseDest, currentSrc.getMeta().getBody()));
+  }
 
   mkdirpSync(filepath) {
     getPathParts(filepath).reduce((subtree, part) => {
@@ -51,7 +79,7 @@ export default class {
     }
     return parent.addChild(base, new File(base, ''));
   }
-   // BEGIN (write your solution here)
+
   unlinkSync(filepath) {
     const { base } = path.parse(filepath);
     const current = this.findNode(filepath);
