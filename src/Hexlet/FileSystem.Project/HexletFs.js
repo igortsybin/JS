@@ -32,26 +32,18 @@ export default class {
 //   ext: '.txt',
 //   name: 'file' }
   copySync(src, dest) {
-    const { base: baseSrc } = path.parse(src);
-    const { dir: dirDest, base: baseDest } = path.parse(dest);
-    // if dest it's a path to a folder, than a name of a file gets from src
     const currentDest = this.findNode(dest);
-    const parentDest = this.findNode(dirDest);
-    const currentSrc = this.findNode(src);
-    if (!currentSrc || !currentDest) {
-      throw new HexletFsError(errors.code.ENOENT, src);
-    }
-    if (currentSrc.getMeta().getStats().isDirectory()) {
-      throw new HexletFsError(errors.code.EISDIR, src);
-    }
-    // console.log(currentSrc.getMeta().getBody());
-    if (currentDest.getMeta().getStats().isDirectory()) {
-      return currentDest.addChild(baseSrc,
-    new File(baseSrc, currentSrc.getMeta().getBody()));
+    const body = this.readFileSync(src); // body
+
+    // if dest it's a path to a folder, then a name of a file gets from src
+    if (currentDest && currentDest.getMeta().getStats().isDirectory()) {
+      const { base } = path.parse(src); // name of a file from src
+      const fullPath = path.posix.join(dest, base);
+      // console.log(fullPath);
+      return this.writeFileSync(fullPath, body);
     }
     // if dest it's path to file (existed or not) than his body = src's body
-    return parentDest.addChild(baseDest,
-    new File(baseDest, currentSrc.getMeta().getBody()));
+    return this.writeFileSync(dest, body);
   }
 
   mkdirpSync(filepath) {
@@ -95,6 +87,7 @@ export default class {
   writeFileSync(filepath, body) {
     const { dir, base } = path.parse(filepath);
     const parent = this.findNode(dir);
+    console.log(dir, parent);
     if (!parent) {
       throw new HexletFsError(errors.code.ENOENT, filepath);
     }
@@ -104,6 +97,7 @@ export default class {
     }
     parent.addChild(base, new File(base, body));
   }
+
   readFileSync(filepath) {
     const current = this.findNode(filepath);
     if (!current) {
