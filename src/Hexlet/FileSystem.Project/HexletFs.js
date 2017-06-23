@@ -87,7 +87,6 @@ export default class {
   writeFileSync(filepath, body) {
     const { dir, base } = path.parse(filepath);
     const parent = this.findNode(dir);
-    console.log(dir, parent);
     if (!parent) {
       throw new HexletFsError(errors.code.ENOENT, filepath);
     }
