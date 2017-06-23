@@ -5,7 +5,8 @@ const compare = (data1, data2) => {
   const lines2 = data2.split('\n').slice(0, -1);
 
   // BEGIN (write your solution here)
-  
+  return lines1.length === lines2.length &&
+  lines1.every((element, index) => element === lines2[index]);
   // END
 };
 const editPath = path => 'src/Hexlet/Async.Project/'.concat(path);
