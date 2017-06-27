@@ -4,15 +4,18 @@ const compare = (data1, data2) => {
   const lines1 = data1.split('\n').slice(0, -1);
   const lines2 = data2.split('\n').slice(0, -1);
   console.log('file1=', lines1);
-  // console.log('file2=', lines2);
   // BEGIN (write your solution here)
-  const smallest = lines1.length > lines2.length ? lines2 : lines1;
-  const bigest = lines1.length < lines2.length ? lines2 : lines1;
-  const result = [];
-  bigest.forEach((item, index) => {
-    result.push([item, smallest.length < index ? null : smallest[index]]);
-  });
-  return result;
+  const [bigest, smallest, order] = lines1.length > lines2.length ?
+   [lines1, lines2, true] : [lines2, lines1, false]; // lines1 bigger for true
+  return bigest.reduce((acc, line, index) => {
+    if (smallest.length <= index) {
+      return [...acc, order ? [line, null] : [null, line]];
+    }
+    if (smallest[index] !== line) {
+      return [...acc, order ? [line, smallest[index]] : [smallest[index], line]];
+    }
+    return acc;
+  }, []);
 
   // END
 };
