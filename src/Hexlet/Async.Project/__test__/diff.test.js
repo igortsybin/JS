@@ -10,6 +10,7 @@ describe('Diff', () => {
 
   it('should work 2', (done) => {
     diff('__test__/fixtures/file1', '__test__/fixtures/file3', (err, data) => {
+      console.log(data);
       expect(data).toEqual([[null, 'hello, world']]);
       done();
     });

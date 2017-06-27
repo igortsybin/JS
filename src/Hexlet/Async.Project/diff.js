@@ -3,7 +3,7 @@ import fs from 'fs';
 const compare = (data1, data2) => {
   const lines1 = data1.split('\n').slice(0, -1);
   const lines2 = data2.split('\n').slice(0, -1);
-  console.log('file1=', lines1);
+  console.log('file1 =', lines1);
   // BEGIN (write your solution here)
   const [bigest, smallest, order] = lines1.length > lines2.length ?
    [lines1, lines2, true] : [lines2, lines1, false]; // lines1 bigger for true
@@ -30,9 +30,9 @@ export default function (part1, part2, callback) {
         if (!err2) {
           // compare(data1, data2);
           callback(err2, compare(data1, data2));
-        }
+        } else callback(err2);
       });
-    }
+    } else callback(err);
   });
 }
 // END
