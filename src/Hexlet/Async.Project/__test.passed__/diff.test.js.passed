@@ -1,5 +1,5 @@
 import diff from '../diff';
-
+console.log('ddddddddHHFGDYFYSDGYUF');
 describe('Diff', () => {
   it('should work', (done) => {
     diff('__test__/fixtures/file1', '__test__/fixtures/file2', (err, data) => {

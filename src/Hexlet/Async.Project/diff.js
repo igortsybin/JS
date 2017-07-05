@@ -22,7 +22,7 @@ const compare = (data1, data2) => {
 const editPath = path => 'src/Hexlet/Async.Project/'.concat(path);
 
 // BEGIN (write your solution here)
-export default function (part1, part2, callback) {
+export default function deff(part1, part2, callback) {
   const fileEncoding = 'utf8';
   fs.readFile(editPath(part1), fileEncoding, (err, data1) => {
     if (!err) {
@@ -35,4 +35,7 @@ export default function (part1, part2, callback) {
     } else callback(err);
   });
 }
+// console.log(deff('__test__/fixtures/file4', '__test__/fixtures/file3'), (err, data) => {
+//   console.log(data);
+// });
 // END
