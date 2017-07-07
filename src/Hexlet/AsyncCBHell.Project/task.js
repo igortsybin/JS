@@ -11,3 +11,12 @@ retry(3, callback =>
   }), (err, result) => {
     console.log(result);
 });
+
+const fn = innerCallback =>
+  fs.readFile('file.txt', (err, body) => {
+    innerCallback(err, body);
+  });
+const outerCallback = (err, result) => {
+    console.log(result);
+};
+retry(3, fn, outerCallback);
