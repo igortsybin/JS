@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Click the button to demonstrate the prompt box.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+<style>
+.p {
+    text-align: center;
+    color: gray;
+}
+</style>
+<script>
+function myFunction() {
+    var result = prompt("Please enter the sum", "0");
+    if (result != null) {
+        document.getElementById("demo").innerHTML =
+        "Result: " + result;
+    }
+}
+</script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ function pow(x, n) {
     return x*pow(x, n - 1);
 
   } else {
-    return 123;
+    return 'error';
   }
 }
 
