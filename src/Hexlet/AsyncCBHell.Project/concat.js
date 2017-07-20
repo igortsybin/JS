@@ -31,23 +31,14 @@ const each = (coll, iteratee, callback = noop) => {
 };
 
 export default (coll, iteratee, callback = noop) => {
-  let completed = 0;
   let outputResult = [];
-  const cb = (err, result) => {
-    if (err) {
-      return callback(err);
-    }
-    console.log(result);
-    
-    // outputResult.push(result);
-    if (completed === coll.length) {
-      callback(null);
-    }
+  const innerConcat = (item, innerCallback) => {
+    outputResult = outputResult.concat(convertedItem);
   };
-  const innerConcat = (item, (err, result) => result.concat(item) ) => {
-    iteratee(item);
-  };
-  each(coll, innerConcat, cb);
+  // const innerConcat = item => outputResult.concat(item);
+  each(coll, innerConcat, (err) => {
+    callback(err, outputResult);
+  });
 };
 
 // END
