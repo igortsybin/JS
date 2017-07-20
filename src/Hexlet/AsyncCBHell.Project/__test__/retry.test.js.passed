@@ -1,4 +1,4 @@
-import retry from '../solution';
+import retry from '../retry';
 
 describe('#retry', () => {
   it('should work if retry number is zero', (done) => {
