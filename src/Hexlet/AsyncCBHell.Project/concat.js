@@ -11,25 +11,29 @@ const once = (fn) => {
 };
 
 // BEGIN (write your solution here)
-export default (coll, iteratee, callback = noop) => {
+const each = (coll, iteratee, callback = noop) => {
   const oncedCallback = once(callback);
   if (coll.length === 0) {
     return callback(null);
   }
   let completed = 0;
-  let outputResult = [];
   const cb = (err, result) => {
-    console.log(result);
     if (err) {
       return oncedCallback(err);
     }
     completed += 1;
-    outputResult.push(result);
+    // outputResult.push(result);
     if (completed === coll.length) {
-      oncedCallback(null, result);
+      oncedCallback(null);
     }
   };
   coll.forEach(item => iteratee(item, cb));
 };
+
+export default concat (coll, iteratee, callback = noop) => {
+  
+  each(coll, iteratee, callback = noop);
+
+}
 
 // END
