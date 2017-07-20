@@ -33,7 +33,9 @@ const each = (coll, iteratee, callback = noop) => {
 export default (coll, iteratee, callback = noop) => {
   let outputResult = [];
   const innerConcat = (item, innerCallback) => {
-    outputResult = outputResult.concat(convertedItem);
+    iteratee(item, (err, convertedItem) => {
+      outputResult = outputResult.concat(convertedItem);
+    });
   };
   // const innerConcat = item => outputResult.concat(item);
   each(coll, innerConcat, (err) => {
