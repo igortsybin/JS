@@ -17,7 +17,7 @@ const each = (coll, iteratee, callback = noop) => {
     return callback(null);
   }
   let completed = 0;
-  const cb = (err, result) => {
+  const cb = (err) => {
     if (err) {
       return oncedCallback(err);
     }
@@ -30,10 +30,14 @@ const each = (coll, iteratee, callback = noop) => {
   coll.forEach(item => iteratee(item, cb));
 };
 
-export default concat (coll, iteratee, callback = noop) => {
-  
-  each(coll, iteratee, callback = noop);
-
-}
+export default (coll, iteratee, callback = noop) => {
+  const cb = (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    console.log(result);
+  };
+  each(coll, iteratee, cb);
+};
 
 // END
