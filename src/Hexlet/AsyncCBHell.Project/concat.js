@@ -17,13 +17,15 @@ export default (coll, iteratee, callback = noop) => {
     return callback(null);
   }
   let completed = 0;
-  const cb = (err) => {
+  const outputResult = [];
+  const cb = (err, result) => {
     if (err) {
       return oncedCallback(err);
     }
     completed += 1;
+    outputResult.push(result);
     if (completed === coll.length) {
-      oncedCallback(null);
+      oncedCallback(null, result);
     }
   };
   coll.forEach(item => iteratee(item, cb));
