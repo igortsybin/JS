@@ -17,8 +17,9 @@ export default (coll, iteratee, callback = noop) => {
     return callback(null);
   }
   let completed = 0;
-  const outputResult = [];
+  let outputResult = [];
   const cb = (err, result) => {
+    console.log(result);
     if (err) {
       return oncedCallback(err);
     }
