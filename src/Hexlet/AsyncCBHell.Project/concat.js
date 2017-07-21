@@ -21,6 +21,7 @@ const each = (coll, iteratee, callback = noop) => {
     if (err) {
       return oncedCallback(err);
     }
+    console.log(`No error, completed = ${completed}`);
     completed += 1;
     // outputResult.push(result);
     if (completed === coll.length) {
@@ -35,6 +36,7 @@ export default (coll, iteratee, callback = noop) => {
   const innerConcat = (item, innerCallback) => {
     iteratee(item, (err, convertedItem) => {
       outputResult = outputResult.concat(convertedItem);
+      innerCallback(err);
     });
   };
   // const innerConcat = item => outputResult.concat(item);
