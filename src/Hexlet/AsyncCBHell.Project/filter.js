@@ -5,7 +5,8 @@ export default (coll, fn, callback) => {
   let outputArray = [];
   const filterInner = (item, callbackInner) => {
     fn(item, (err, filteredItem) => {
-      outputArray = outputArray.filer(callbackInner);
+      console.log(callbackInner.toString());
+      outputArray = outputArray.filter(callbackInner);
       callbackInner(err);
     });
   };
