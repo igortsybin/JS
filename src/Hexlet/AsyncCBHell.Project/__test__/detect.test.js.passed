@@ -1,0 +1,46 @@
+import detect from '../detect';
+
+describe('#detect', () => {
+  it('should work', (done) => {
+    const coll = [1, 2, 3];
+    detect(coll, (item, callback) => {
+      callback(null, item);
+    }, (err, result) => {
+      expect(result).toBe(1);
+      done();
+    });
+  });
+
+  it('should work 2', (done) => {
+    const coll = [];
+    detect(coll, () => {
+    }, () => {
+      done();
+    });
+  });
+
+  it('should work 3', (done) => {
+    const coll = [1, 2];
+    detect(coll, (item, callback) => {
+      callback('error');
+    }, (err) => {
+      expect(err).toBe('error');
+      done();
+    });
+  });
+
+  it('should work 4', (done) => {
+    const coll = [1, 2, 5];
+    detect(coll, (item, callback) => {
+      if (item === 2) {
+        callback(null, item);
+      } else {
+        callback('error');
+      }
+    }, (err, result) => {
+      expect(err).toBe(null);
+      expect(result).toBe(2);
+      done();
+    });
+  });
+});

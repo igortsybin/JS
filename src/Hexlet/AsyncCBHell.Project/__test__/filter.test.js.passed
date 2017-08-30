@@ -13,11 +13,11 @@ describe('Filter', () => {
   });
 
   it('should work with empty array', (done) => {
-    const coll = [];
+    const coll = [2];
     filter(coll, (item, callback) => {
       callback(null, item % 2 === 0);
     }, (err, result) => {
-      expect(result).toEqual([]);
+      expect(result).toEqual([2]);
       done();
     });
   });

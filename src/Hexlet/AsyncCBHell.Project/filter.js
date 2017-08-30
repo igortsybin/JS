@@ -1,23 +1,28 @@
-import once from './once';
 import noop from './noop';
 
 export default (coll, iteratee, callback = noop) => {
-  const oncedCallback = once(callback);
   if (coll.length === 0) {
-    return callback(null);
+    return callback(null, coll);
   }
   let completed = 0;
-  const cb = (err, fn) => {
-    console.log(fn);
+  const newArray = [];
+  const cb = (item, index, err, truthValue) => {
+    // console.log(item);
     if (err) {
-      return oncedCallback(err, fn);
+      return callback(null, coll);
     }
-    console.log(`No error, completed = ${completed}`);
+    
+    if (truthValue) {
+      // newArray = newArray.concat(coll[completed]);
+      // newArray = newArray.concat(item);
+      newArray[index] = item;
+    }
     completed += 1;
-    // outputResult.push(result);
+    // const results = coll.filter(); // how to use 
     if (completed === coll.length) {
-      oncedCallback(null, fn);
+      const results = newArray.filter(elem => !!elem);
+      callback(err, results);
     }
   };
-  coll.filter(item => iteratee(item, cb));
+  coll.forEach((item0, index) => iteratee(item0, cb.bind(null, item0, index)));
 };
